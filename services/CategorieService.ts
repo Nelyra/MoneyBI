@@ -1,20 +1,23 @@
 import { Categorie } from "../model/categorie";
-import { client } from "../mysql";
+import sql from "../mysql";
 
-export async function get(id: number): Promise<Categorie> {
-    return new Promise((resolve, reject) => {
-        client.query(
-            "SELECT * FROM categorie WHERE idCategorie = ?",
-            [id],
-            (error, results) => {
-                if (error) {
-                    reject(error);
-                } else if (results.length === 0) {
-                    reject(new Error("Categorie not found"));
-                } else {
-                    resolve(results[0] as Categorie);
-                }
-            }
-        );
-    });
+export async function getCategories(): Promise<Categorie[]> {
+    const result = (await sql.query("SELECT * FROM categorie")
+        .catch((err) => {
+            console.error("Error fetching categories:", err);
+            throw err;
+        }))[0] as Categorie[];
+
+    return result;
 }
+
+export async function getCategorieById(id: number): Promise<Categorie | null> {
+    const result = (await sql.query("SELECT * FROM categorie WHERE idCategorie = ?", [id])
+        .catch((err) => {
+            console.error("Error fetching category by ID:", err);
+            throw err;
+        }))[0] as Categorie[];
+
+    return result.length > 0 ? result[0] : null;
+}
+
