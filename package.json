@@ -1,6 +1,10 @@
 {
   "dependencies": {
     "faker": "^6.6.6",
+    "mysql": "^2.18.1",
     "tsx": "^4.19.4"
+  },
+  "scripts": {
+    "start": "tsx watch generate.ts"
   }
 }
