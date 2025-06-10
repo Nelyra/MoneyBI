@@ -1,3 +1,7 @@
-// script to generate test data for bdd
+import { faker } from '@faker-js/faker';
 
-console.log('Meow...');
+const generateUser = () => {
+    return {
+        idUtilisateur: faker.string.uuid(),
+    }
+}
