@@ -1,6 +1,11 @@
 import { faker } from '@faker-js/faker';
+import { Categorie } from './model/categorie';
+import { Compte } from './model/compte';
+import { Mouvement } from './model/mouvement';
+import { SousCategorie } from './model/souscategorie';
+import { Tiers } from './model/tiers';
 
-function generateCategorie() {
+function generateCategorie(): Categorie {
     return {
         idCategorie: faker.number.int({ min: 1, max: 1000 }),
         nomCategorie: faker.commerce.department(),
@@ -9,11 +14,11 @@ function generateCategorie() {
     }
 }
 
-function generateCategories(count: number) {
+export function generateCategories(count: number): Categorie[] {
     return Array.from({ length: count }, generateCategorie);
 }
 
-function generateCompte() {
+function generateCompte(): Compte {
     return {
         idCompte: faker.number.int({ min: 1, max: 1000 }),
         nomBanque: faker.company.name(),
@@ -24,11 +29,11 @@ function generateCompte() {
     }
 }
 
-function generateComptes(count: number) {
+function generateComptes(count: number): Compte[] {
     return Array.from({ length: count }, generateCompte);
 }
 
-function generateMouvement(idCompte: number, idCategorie: number) {
+function generateMouvement(idCompte: number, idCategorie: number): Mouvement {
     return {
         idMouvement: faker.number.int({ min: 1, max: 1000 }),
         idCompte,
@@ -44,11 +49,11 @@ function generateMouvement(idCompte: number, idCategorie: number) {
     }
 }
 
-function generateMouvements(count: number, idCompte: number, idCategorie: number) {
+function generateMouvements(count: number, idCompte: number, idCategorie: number) : Mouvement[] {
     return Array.from({ length: count }, () => generateMouvement(idCompte, idCategorie));
 }
 
-function generateSousCategorie(idCategorie: number) {
+function generateSousCategorie(idCategorie: number): SousCategorie {
     return {
         idSousCategorie: faker.number.int({ min: 1, max: 1000 }),
         idCategorie,
@@ -58,11 +63,11 @@ function generateSousCategorie(idCategorie: number) {
     }
 }
 
-function generateSousCategories(count: number, idCategorie: number) {
+function generateSousCategories(count: number, idCategorie: number): SousCategorie[] {
     return Array.from({ length: count }, () => generateSousCategorie(idCategorie));
 }
 
-function generateTiers() {
+function generateTiers(): Tiers {
     return {
         idTiers: faker.number.int({ min: 1, max: 1000 }),
         nomTiers: faker.company.name(),
@@ -72,7 +77,7 @@ function generateTiers() {
     }
 }
 
-function generateTiersList(count: number) {
+function generateTiersList(count: number): Tiers[] {
     return Array.from({ length: count }, generateTiers);
 }
 

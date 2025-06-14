@@ -1,15 +1,20 @@
 // script to generate test data for bdd
-import { getCategories } from "./services/CategorieService";
+import { getCategories, insertCategorie } from "./services/CategorieService";
+import { generateCategories } from "./faker";
 
 async function generateTestData() {
     try {
-        const categories = await getCategories();
-        console.log("Categories:", categories);
+        const categories = generateCategories(10);
+        for (const categorie of categories) {
+            const result = await insertCategorie(categorie);
+            console.log(`Inserted category: ${result.nomCategorie} with ID: ${result.idCategorie}`);
+        }
+
     } catch (error) {
         console.error("Error generating test data:", error);
     }
 }
 
-generateTestData();
+generateTestData(); 
 
 console.log('Meow...');
