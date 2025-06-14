@@ -34,13 +34,13 @@ export function generateComptes(count: number): Compte[] {
     return Array.from({ length: count }, generateCompte);
 }
 
-function generateMouvement(idCompte: number, idCategorie: number): Mouvement {
+function generateMouvement(idCompte: number, sousCategorie: SousCategorie): Mouvement {
     return {
         idMouvement: faker.number.int({ min: 1, max: 1000 }),
         idCompte,
         idTiers: faker.number.int({ min: 1, max: 1000 }),
-        idSousCategorie: faker.number.int({ min: 1, max: 1000 }),
-        idCategorie,
+        idSousCategorie: sousCategorie.idSousCategorie,
+        idCategorie: sousCategorie.idCategorie,
         idVirement: faker.number.int({ min: 1, max: 1000 }),
         montant: parseFloat(faker.commerce.price()),
         typeMouvement: faker.helpers.arrayElement(['D', 'C']),
@@ -50,8 +50,8 @@ function generateMouvement(idCompte: number, idCategorie: number): Mouvement {
     }
 }
 
-export function generateMouvements(count: number, idCompte: number, idCategorie: number) : Mouvement[] {
-    return Array.from({ length: count }, () => generateMouvement(idCompte, idCategorie));
+export function generateMouvements(count: number, nbComptes: number, sousCategories: SousCategorie[]) : Mouvement[] {
+    return Array.from({ length: count }, () => generateMouvement(faker.number.int({min: 1, max: nbComptes}), faker.helpers.arrayElement(sousCategories)));
 }
 
 function generateSousCategorie(idCategorie: number): SousCategorie {
