@@ -4,6 +4,7 @@ import { Compte } from './model/compte';
 import { Mouvement } from './model/mouvement';
 import { SousCategorie } from './model/souscategorie';
 import { Tiers } from './model/tiers';
+import { Utilisateur } from './model/utilisateur';
 
 function generateCategorie(): Categorie {
     return {
@@ -29,7 +30,7 @@ function generateCompte(): Compte {
     }
 }
 
-function generateComptes(count: number): Compte[] {
+export function generateComptes(count: number): Compte[] {
     return Array.from({ length: count }, generateCompte);
 }
 
@@ -49,7 +50,7 @@ function generateMouvement(idCompte: number, idCategorie: number): Mouvement {
     }
 }
 
-function generateMouvements(count: number, idCompte: number, idCategorie: number) : Mouvement[] {
+export function generateMouvements(count: number, idCompte: number, idCategorie: number) : Mouvement[] {
     return Array.from({ length: count }, () => generateMouvement(idCompte, idCategorie));
 }
 
@@ -63,8 +64,8 @@ function generateSousCategorie(idCategorie: number): SousCategorie {
     }
 }
 
-function generateSousCategories(count: number, idCategorie: number): SousCategorie[] {
-    return Array.from({ length: count }, () => generateSousCategorie(idCategorie));
+export function generateSousCategories(count: number, nbCategorie: number): SousCategorie[] {
+    return Array.from({ length: count }, () => generateSousCategorie(faker.number.int({ min: 1, max: nbCategorie })));
 }
 
 function generateTiers(): Tiers {
@@ -77,7 +78,21 @@ function generateTiers(): Tiers {
     }
 }
 
-function generateTiersList(count: number): Tiers[] {
+export function generateTiersList(count: number): Tiers[] {
     return Array.from({ length: count }, generateTiers);
+}
+
+export function generateUtilisateur(): Utilisateur {
+    return {
+        idUtilisateur: 1,
+        nomUtilisateur: faker.person.lastName(),
+        prenomUtilisateur: faker.person.firstName(),
+        login: faker.internet.username(),
+        mdp: faker.internet.password(),
+        ville: faker.location.city(),
+        codePostal: faker.location.zipCode(),
+        dateHeureCreation: faker.date.past(),
+        dateHeureMAJ: faker.date.recent(),
+    }
 }
 

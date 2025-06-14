@@ -1,4 +1,3 @@
-import { ResultSetHeader } from "mysql2";
 import { Categorie } from "../model/categorie";
 import sql from "../mysql";
 
@@ -35,3 +34,11 @@ export async function insertCategorie(categorie: Categorie): Promise<Categorie> 
     }
 }
 
+export async function insertMultipleCategories(categories: Categorie[]): Promise<Categorie[]> {
+    const insertedCategories: Categorie[] = [];
+    for (const categorie of categories) {
+        const insertedCategory = await insertCategorie(categorie);
+        insertedCategories.push(insertedCategory);
+    }
+    return insertedCategories;
+}
