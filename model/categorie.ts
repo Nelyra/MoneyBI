@@ -1,4 +1,4 @@
-export interface Categorie {
+export default interface Categorie {
   idCategorie: number;
   nomCategorie: string;
   dateHeureCreation: Date;
