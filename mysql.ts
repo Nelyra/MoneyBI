@@ -1,14 +1,16 @@
-var mysql = require('mysql');
-const DATABASE = "money"
+import * as mysql from 'mysql';
+import * as dotenv from 'dotenv';
 
-exports.client = mysql.createConnection({
+dotenv.config();
+
+export const client = mysql.createConnection({
     host: process.env.BDD_HOST, 
     user: process.env.BDD_USER,
     password: process.env.BDD_PASSWORD,
-    database: DATABASE,
+    database: process.env.BDD_NAME,
 })
 
-exports.connectMySQL = () =>
+export function connectMySQL()
 {
     try {
         this.client.connect()

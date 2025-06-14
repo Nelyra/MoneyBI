@@ -1,4 +1,4 @@
-export interface Mouvement {
+export default interface Mouvement {
     idMouvement: number;
     idCompte: number;
     idTiers: number;
