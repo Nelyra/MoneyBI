@@ -1,4 +1,4 @@
-export default interface SousCategorie {
+export interface SousCategorie {
     idSousCategorie: number;
     idCategorie: number;
     nomSousCategorie: string;

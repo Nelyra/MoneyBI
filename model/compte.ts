@@ -1,4 +1,4 @@
-export default interface Compte {
+export interface Compte {
     idCompte: number;
     nomBanque: string;
     descriptionCompte: string;
