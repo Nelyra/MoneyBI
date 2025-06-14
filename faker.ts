@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-const generateCategorie = () => {
+function generateCategorie() {
     return {
         idCategorie: faker.number.int({ min: 1, max: 1000 }),
         nomCategorie: faker.commerce.department(),
@@ -9,11 +9,11 @@ const generateCategorie = () => {
     }
 }
 
-const generateCategories = (count: number) => {
+function generateCategories(count: number) {
     return Array.from({ length: count }, generateCategorie);
 }
 
-const generateCompte = () => {
+function generateCompte() {
     return {
         idCompte: faker.number.int({ min: 1, max: 1000 }),
         nomBanque: faker.company.name(),
@@ -24,11 +24,11 @@ const generateCompte = () => {
     }
 }
 
-const generateComptes = (count: number) => {
+function generateComptes(count: number) {
     return Array.from({ length: count }, generateCompte);
 }
 
-const generateMouvement = (idCompte: number, idCategorie: number) => {
+function generateMouvement(idCompte: number, idCategorie: number) {
     return {
         idMouvement: faker.number.int({ min: 1, max: 1000 }),
         idCompte,
@@ -44,11 +44,11 @@ const generateMouvement = (idCompte: number, idCategorie: number) => {
     }
 }
 
-const generateMouvements = (count: number, idCompte: number, idCategorie: number) => {
+function generateMouvements(count: number, idCompte: number, idCategorie: number) {
     return Array.from({ length: count }, () => generateMouvement(idCompte, idCategorie));
 }
 
-const generateSousCategorie = (idCategorie: number) => {
+function generateSousCategorie(idCategorie: number) {
     return {
         idSousCategorie: faker.number.int({ min: 1, max: 1000 }),
         idCategorie,
@@ -58,11 +58,11 @@ const generateSousCategorie = (idCategorie: number) => {
     }
 }
 
-const generateSousCategories = (count: number, idCategorie: number) => {
+function generateSousCategories(count: number, idCategorie: number) {
     return Array.from({ length: count }, () => generateSousCategorie(idCategorie));
 }
 
-const generateTiers = () => {
+function generateTiers() {
     return {
         idTiers: faker.number.int({ min: 1, max: 1000 }),
         nomTiers: faker.company.name(),
@@ -72,7 +72,7 @@ const generateTiers = () => {
     }
 }
 
-const generateTiersList = (count: number) => {
+function generateTiersList(count: number) {
     return Array.from({ length: count }, generateTiers);
 }
 
