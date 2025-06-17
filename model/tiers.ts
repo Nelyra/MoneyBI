@@ -5,3 +5,8 @@ export interface Tiers {
     dateHeureCreation: Date;
     dateHeureMAJ: Date;
 }
+
+export interface TiersETL {
+    idTiers: number;
+    nomTiers: string;
+}

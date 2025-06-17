@@ -6,3 +6,8 @@ export interface Compte {
     dateHeureCreation: Date;
     dateHeureMAJ: Date;
 }
+
+export interface CompteETL {
+    idCompte: number;
+    nomBanque: string;
+}

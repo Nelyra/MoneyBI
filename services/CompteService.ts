@@ -1,5 +1,5 @@
 import { localSql } from "../sql";
-import { Compte } from "../model/compte";
+import { Compte, CompteETL } from "../model/compte";
 
 export async function getComptes(): Promise<Compte[]> {
     const result = await localSql.query("SELECT * FROM compte")
@@ -9,6 +9,26 @@ export async function getComptes(): Promise<Compte[]> {
         })[0] as Compte[];
 
     return result;
+}
+
+export function getComptesETL(): CompteETL[] {
+    const comptesETL: CompteETL[] = [];
+
+    getComptes().then((comptes) => {
+        for (const compte of comptes) {
+            if (compte.idCompte === null || compte.idCompte === undefined) {
+                console.warn("Skipping compte with null values:", compte);
+                continue;
+            }
+
+            comptesETL.push({
+                idCompte: compte.idCompte,
+                nomBanque: compte.nomBanque,
+            });
+        }
+    });
+
+    return comptesETL;
 }
 
 export async function getCompteById(id: number): Promise<Compte | null> {
