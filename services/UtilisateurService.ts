@@ -1,10 +1,10 @@
-import sql from "../mysql";
+import { localSql } from "../sql";
 
 import { Utilisateur } from "../model/utilisateur";
 import { get } from "http";
 
 export async function getUtilisateurs(): Promise<Utilisateur[]> {
-    const result = await sql.query("SELECT * FROM utilisateur")
+    const result = await localSql.query("SELECT * FROM utilisateur")
         .catch((err) => {
             console.error("Error fetching utilisateurs:", err);
             throw err;
@@ -14,7 +14,7 @@ export async function getUtilisateurs(): Promise<Utilisateur[]> {
 }
 
 export async function getUtilisateurById(id: number): Promise<Utilisateur | null> {
-    const result = (await sql.query("SELECT * FROM utilisateur WHERE idUtilisateur = ?", [id])
+    const result = (await localSql.query("SELECT * FROM utilisateur WHERE idUtilisateur = ?", [id])
         .catch((err) => {
             console.error("Error fetching utilisateur by ID:", err);
             throw err;
@@ -24,7 +24,7 @@ export async function getUtilisateurById(id: number): Promise<Utilisateur | null
 }
 
 export async function insertUtilisateur(utilisateur: Utilisateur): Promise<Utilisateur> {
-    const result: any = await sql.query("INSERT INTO utilisateur (idUtilisateur, nomUtilisateur, prenomUtilisateur, login, mdp, ville, codePostal, dateHeureCreation, dateHeureMAJ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+    const result: any = await localSql.query("INSERT INTO utilisateur (idUtilisateur, nomUtilisateur, prenomUtilisateur, login, mdp, ville, codePostal, dateHeureCreation, dateHeureMAJ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
         [utilisateur.idUtilisateur, utilisateur.nomUtilisateur, utilisateur.prenomUtilisateur, utilisateur.login, utilisateur.mdp, utilisateur.ville, utilisateur.codePostal, utilisateur.dateHeureCreation, utilisateur.dateHeureMAJ])
         .catch((err) => {
             console.error("Error inserting utilisateur:", err);

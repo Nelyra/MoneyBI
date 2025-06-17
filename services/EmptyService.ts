@@ -1,13 +1,13 @@
-import sql from "../mysql";
+import { localSql } from "../sql";
 
 export async function emptyTables() {
-    await sql.query("SET FOREIGN_KEY_CHECKS = 0");
-    await sql.query("TRUNCATE TABLE utilisateur");
-    await sql.query("TRUNCATE TABLE categorie");
-    await sql.query("TRUNCATE TABLE souscategorie");
-    await sql.query("TRUNCATE TABLE compte");
-    await sql.query("TRUNCATE TABLE tiers");
-    await sql.query("TRUNCATE TABLE mouvement");
-    await sql.query("SET FOREIGN_KEY_CHECKS = 1");
+    await localSql.query("SET FOREIGN_KEY_CHECKS = 0");
+    await localSql.query("TRUNCATE TABLE utilisateur");
+    await localSql.query("TRUNCATE TABLE categorie");
+    await localSql.query("TRUNCATE TABLE souscategorie");
+    await localSql.query("TRUNCATE TABLE compte");
+    await localSql.query("TRUNCATE TABLE tiers");
+    await localSql.query("TRUNCATE TABLE mouvement");
+    await localSql.query("SET FOREIGN_KEY_CHECKS = 1");
     console.log("All tables have been emptied.");
 }

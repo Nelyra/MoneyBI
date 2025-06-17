@@ -1,9 +1,9 @@
-import sql from "../mysql"; 
+import { localSql } from "../sql"; 
 
 import { Tiers } from "../model/tiers";
 
 export async function getTiers(): Promise<Tiers[]> {
-    const result = await sql.query("SELECT * FROM tiers")
+    const result = await localSql.query("SELECT * FROM tiers")
         .catch((err) => {
             console.error("Error fetching tiers:", err);
             throw err;
@@ -13,7 +13,7 @@ export async function getTiers(): Promise<Tiers[]> {
 }
 
 export async function getTiersById(id: number): Promise<Tiers | null> {
-    const result = await sql.query("SELECT * FROM tiers WHERE idTiers = ?", [id])
+    const result = await localSql.query("SELECT * FROM tiers WHERE idTiers = ?", [id])
         .catch((err) => {
             console.error("Error fetching tiers by ID:", err);
             throw err;
@@ -23,7 +23,7 @@ export async function getTiersById(id: number): Promise<Tiers | null> {
 }
 
 export async function insertTiers(tiers: Tiers): Promise<Tiers> {
-    const result: any = await sql.query("INSERT INTO tiers (nomTiers, dateHeureCreation, dateHeureMAJ) VALUES (?, ?, ?)", 
+    const result: any = await localSql.query("INSERT INTO tiers (nomTiers, dateHeureCreation, dateHeureMAJ) VALUES (?, ?, ?)", 
         [tiers.nomTiers, tiers.dateHeureCreation, tiers.dateHeureMAJ])
         .catch((err) => {
             console.error("Error inserting tiers:", err);

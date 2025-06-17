@@ -1,9 +1,9 @@
-import sql from "../mysql";
+import { localSql } from "../sql";
 
 import { Mouvement } from "../model/mouvement"; 
 
 export async function getMouvements(): Promise<Mouvement[]> {
-    const result = await sql.query("SELECT * FROM mouvement")
+    const result = await localSql.query("SELECT * FROM mouvement")
         .catch((err) => {
             console.error("Error fetching mouvements:", err);
             throw err;
@@ -13,7 +13,7 @@ export async function getMouvements(): Promise<Mouvement[]> {
 }
 
 export async function getMouvementById(id: number): Promise<Mouvement | null> {
-    const result = await sql.query("SELECT * FROM mouvement WHERE idMouvement = ?", [id])
+    const result = await localSql.query("SELECT * FROM mouvement WHERE idMouvement = ?", [id])
         .catch((err) => {
             console.error("Error fetching mouvement by ID:", err);
             throw err;
@@ -23,7 +23,7 @@ export async function getMouvementById(id: number): Promise<Mouvement | null> {
 }
 
 export async function insertMouvement(mouvement: Mouvement): Promise<Mouvement> {
-    const result: any = await sql.query("INSERT INTO mouvement (idCompte, idTiers, idSousCategorie, idCategorie, montant, dateHeureCreation, dateHeureMAJ) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+    const result: any = await localSql.query("INSERT INTO mouvement (idCompte, idTiers, idSousCategorie, idCategorie, montant, dateHeureCreation, dateHeureMAJ) VALUES (?, ?, ?, ?, ?, ?, ?)", 
         [mouvement.idCompte, mouvement.idTiers, mouvement.idSousCategorie, mouvement.idCategorie, mouvement.montant, mouvement.dateHeureCreation, mouvement.dateHeureMAJ])
         .catch((err) => {
             console.error("Error inserting mouvement:", err);

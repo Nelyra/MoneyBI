@@ -16,6 +16,4 @@ const access: ConnectionOptions = {
     database: process.env.BDD_NAME,
 }
 
-const connection: Pool = mysql.createPool(access);
-
-export default connection;
+export const localSql: Pool = mysql.createPool(access);

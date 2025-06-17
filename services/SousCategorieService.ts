@@ -1,8 +1,8 @@
-import sql from "../mysql";
+import { localSql } from "../sql";
 import { SousCategorie } from "../model/souscategorie";
 
 export async function getSousCategories(): Promise<SousCategorie[]> {
-    const result = (await sql.query("SELECT * FROM souscategorie")
+    const result = (await localSql.query("SELECT * FROM souscategorie")
         .catch((err) => {
             console.error("Error fetching souscategories:", err);
             throw err;
@@ -12,7 +12,7 @@ export async function getSousCategories(): Promise<SousCategorie[]> {
 }
 
 export async function getSousCategorieById(id: number): Promise<SousCategorie | null> {
-    const result = await sql.query("SELECT * FROM souscategorie WHERE idSousCategorie = ?", [id])
+    const result = await localSql.query("SELECT * FROM souscategorie WHERE idSousCategorie = ?", [id])
         .catch((err) => {
             console.error("Error fetching souscategorie by ID:", err);
             throw err;
@@ -22,7 +22,7 @@ export async function getSousCategorieById(id: number): Promise<SousCategorie | 
 }
 
 export async function insertSousCategorie(sousCategorie: SousCategorie): Promise<SousCategorie> {
-    const result: any = await sql.query("INSERT INTO souscategorie (idCategorie, nomSousCategorie, dateHeureCreation, dateHeureMAJ) VALUES (?, ?, ?, ?)", 
+    const result: any = await localSql.query("INSERT INTO souscategorie (idCategorie, nomSousCategorie, dateHeureCreation, dateHeureMAJ) VALUES (?, ?, ?, ?)", 
         [sousCategorie.idCategorie, sousCategorie.nomSousCategorie, sousCategorie.dateHeureCreation, sousCategorie.dateHeureMAJ])
         .catch((err) => {
             console.error("Error inserting souscategorie:", err);

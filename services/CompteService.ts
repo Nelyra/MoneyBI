@@ -1,8 +1,8 @@
-import sql from "../mysql";
+import { localSql } from "../sql";
 import { Compte } from "../model/compte";
 
 export async function getComptes(): Promise<Compte[]> {
-    const result = await sql.query("SELECT * FROM compte")
+    const result = await localSql.query("SELECT * FROM compte")
         .catch((err) => {
             console.error("Error fetching comptes:", err);
             throw err;
@@ -12,7 +12,7 @@ export async function getComptes(): Promise<Compte[]> {
 }
 
 export async function getCompteById(id: number): Promise<Compte | null> {
-    const result = await sql.query("SELECT * FROM compte WHERE idCompte = ?", [id])
+    const result = await localSql.query("SELECT * FROM compte WHERE idCompte = ?", [id])
         .catch((err) => {
             console.error("Error fetching compte by ID:", err);
             throw err;
@@ -22,7 +22,7 @@ export async function getCompteById(id: number): Promise<Compte | null> {
 }
 
 export async function insertCompte(compte: Compte): Promise<Compte> {
-    const result: any = await sql.query("INSERT INTO compte (idUtilisateur, descriptionCompte, nomBanque, dateHeureCreation, dateHeureMAJ) VALUES (?, ?, ?, ?, ?)", 
+    const result: any = await localSql.query("INSERT INTO compte (idUtilisateur, descriptionCompte, nomBanque, dateHeureCreation, dateHeureMAJ) VALUES (?, ?, ?, ?, ?)", 
         [compte.idUtilisateur, compte.descriptionCompte, compte.nomBanque, compte.dateHeureCreation, compte.dateHeureMAJ])
         .catch((err) => {
             console.error("Error inserting compte:", err);
