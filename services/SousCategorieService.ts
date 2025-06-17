@@ -1,4 +1,4 @@
-import { localSql } from "../sql";
+import { localSql, etlSql } from "../sql";
 import { SousCategorie, SousCategorieETL } from "../model/souscategorie";
 
 export async function getSousCategories(): Promise<SousCategorie[]> {
@@ -47,6 +47,19 @@ export async function insertSousCategorie(sousCategorie: SousCategorie): Promise
         [sousCategorie.idCategorie, sousCategorie.nomSousCategorie, sousCategorie.dateHeureCreation, sousCategorie.dateHeureMAJ])
         .catch((err) => {
             console.error("Error inserting souscategorie:", err);
+            throw err;
+        });
+    return {
+        ...sousCategorie,
+        idSousCategorie: result[0].insertId,
+    };
+}
+
+export async function insertETLSousCategorie(sousCategorie: SousCategorieETL): Promise<SousCategorieETL> {
+    const result: any = await etlSql.query("INSERT INTO souscategorie (idSousCategorie, idCategorie, nomSousCategorie) VALUES (?, ?, ?)",
+        [sousCategorie.idSousCategorie, sousCategorie.idCategorie, sousCategorie.nomSousCategorie])
+        .catch((err) => {
+            console.error("Error inserting ETL souscategorie:", err);
             throw err;
         });
     return {

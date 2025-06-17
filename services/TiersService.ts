@@ -1,4 +1,4 @@
-import { localSql } from "../sql"; 
+import { localSql, etlSql } from "../sql"; 
 
 import { Tiers, TiersETL } from "../model/tiers";
 
@@ -55,6 +55,19 @@ export async function insertTiers(tiers: Tiers): Promise<Tiers> {
     };
 }
 
+export async function insertETLTiers(tiers: TiersETL): Promise<TiersETL> {
+    const result: any = await etlSql.query("INSERT INTO tiers (idTiers, nomTiers) VALUES (?, ?)",
+        [tiers.idTiers, tiers.nomTiers])
+        .catch((err) => {
+            console.error("Error inserting ETL tiers:", err);
+            throw err;
+        });
+    return {
+        ...tiers,
+        idTiers: result[0].insertId,
+    };
+}
+
 export async function insertMultipleTiers(tiersList: Tiers[]): Promise<Tiers[]> {
     const insertedTiers: Tiers[] = [];
     for (const tiers of tiersList) {
@@ -62,4 +75,13 @@ export async function insertMultipleTiers(tiersList: Tiers[]): Promise<Tiers[]> 
         insertedTiers.push(insertedTiersItem);
     }
     return insertedTiers;
+}
+
+export async function insertMultipleETLTiers(tiersList: TiersETL[]): Promise<TiersETL[]> {
+    const insertedTiersETL: TiersETL[] = [];
+    for (const tiers of tiersList) {
+        const insertedTiersItem = await insertETLTiers(tiers);
+        insertedTiersETL.push(insertedTiersItem);
+    }
+    return insertedTiersETL;
 }

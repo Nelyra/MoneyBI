@@ -1,6 +1,6 @@
 import { get } from "http";
 import { Categorie, CategorieETL } from "../model/categorie";
-import { localSql } from "../sql";
+import { localSql, etlSql } from "../sql";
 
 export async function getCategories(): Promise<Categorie[]> {
     const result = await localSql.query("SELECT * FROM categorie")
@@ -55,6 +55,19 @@ export async function insertCategorie(categorie: Categorie): Promise<Categorie> 
     }
 }
 
+export async function insertETLCategorie(categorie: CategorieETL): Promise<CategorieETL> {
+    const result: any = await etlSql.query("INSERT INTO categorie (idCategorie, nomCategorie) VALUES (?, ?)", 
+        [categorie.idCategorie, categorie.nomCategorie])
+        .catch((err) => {
+            console.error("Error inserting ETL category:", err);
+            throw err;
+        });
+    return {
+        ...categorie,
+        idCategorie: result[0].insertId, 
+    }
+}
+
 export async function insertMultipleCategories(categories: Categorie[]): Promise<Categorie[]> {
     const insertedCategories: Categorie[] = [];
     for (const categorie of categories) {
@@ -62,4 +75,13 @@ export async function insertMultipleCategories(categories: Categorie[]): Promise
         insertedCategories.push(insertedCategory);
     }
     return insertedCategories;
+}
+
+export async function insertMultipleETLCategories(categories: CategorieETL[]): Promise<CategorieETL[]> {
+    const insertedCategoriesETL: CategorieETL[] = [];
+    for (const categorie of categories) {
+        const insertedCategoryETL = await insertETLCategorie(categorie);
+        insertedCategoriesETL.push(insertedCategoryETL);
+    }
+    return insertedCategoriesETL;
 }

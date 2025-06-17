@@ -1,4 +1,4 @@
-import { localSql } from "../sql";
+import { localSql, etlSql } from "../sql";
 
 import { Mouvement, MouvementETL } from "../model/mouvement"; 
 
@@ -28,7 +28,7 @@ export function getMouvementsETL(): MouvementETL[] {
                 idTiers: mouvement.idTiers,
                 idSousCategorie: mouvement.idSousCategorie,
                 idCategorie: mouvement.idCategorie,
-                montant: mouvement.montant,
+                montant: mouvement.montant * (mouvement.typeMouvement === "D" ? -1 : 1), // Assuming typeMouvement is 'D' for debit and 'C' for credit
                 dateMouvement: mouvement.dateMouvement
             });
         }
@@ -60,6 +60,19 @@ export async function insertMouvement(mouvement: Mouvement): Promise<Mouvement> 
     };
 }
 
+export async function insertETLMouvement(mouvement: MouvementETL): Promise<MouvementETL> {
+    const result: any = await etlSql.query("INSERT INTO mouvement (idMouvement, idCompte, idTiers, idSousCategorie, idCategorie, montant, dateMouvement) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        [mouvement.idMouvement, mouvement.idCompte, mouvement.idTiers, mouvement.idSousCategorie, mouvement.idCategorie, mouvement.montant, mouvement.dateMouvement])
+        .catch((err) => {
+            console.error("Error inserting ETL mouvement:", err);
+            throw err;
+        });
+    return {
+        ...mouvement,
+        idMouvement: result[0].insertId,
+    };
+}
+
 export async function insertMultipleMouvements(mouvements: Mouvement[]): Promise<Mouvement[]> {
     const insertedMouvements: Mouvement[] = [];
     for (const mouvement of mouvements) {
@@ -67,4 +80,13 @@ export async function insertMultipleMouvements(mouvements: Mouvement[]): Promise
         insertedMouvements.push(insertedMouvement);
     }
     return insertedMouvements;
+}
+
+export async function insertMultipleETLMouvements(mouvementsETL: MouvementETL[]): Promise<MouvementETL[]> {
+    const insertedMouvementsETL: MouvementETL[] = [];
+    for (const mouvementETL of mouvementsETL) {
+        const insertedMouvementETL = await insertETLMouvement(mouvementETL);
+        insertedMouvementsETL.push(insertedMouvementETL);
+    }
+    return insertedMouvementsETL;
 }
