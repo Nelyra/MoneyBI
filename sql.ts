@@ -11,3 +11,13 @@ const access: ConnectionOptions = {
 }
 
 export const localSql: Pool = mysql.createPool(access);
+
+
+const etlAccess: ConnectionOptions = {
+    host: process.env.BDD_ETL_HOST,
+    user: process.env.BDD_ETL_USERNAME,
+    password: process.env.BDD_ETL_PASSWORD,
+    database: process.env.BDD_ETL_NAME,
+}
+
+export const etlSql: Pool = mysql.createPool(etlAccess);
