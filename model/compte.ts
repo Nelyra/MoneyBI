@@ -1,5 +1,5 @@
 export interface Compte {
-    idCompte: number;
+    idCompte?: number;
     nomBanque: string;
     descriptionCompte: string;
     idUtilisateur: number;

@@ -1,5 +1,5 @@
 export interface Tiers {
-    idTiers: number;
+    idTiers?: number;
     nomTiers: string;
     idUtilisateur: number;
     dateHeureCreation: Date;

@@ -1,5 +1,5 @@
 export interface Categorie {
-  idCategorie: number;
+  idCategorie?: number;
   nomCategorie: string;
   dateHeureCreation: Date;
   dateHeureMAJ: Date;

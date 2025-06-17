@@ -134,7 +134,7 @@ DELIMITER ;
 CREATE TABLE `souscategorie` (
   `idSousCategorie` int(11) NOT NULL,
   `nomSousCategorie` varchar(50) NOT NULL,
-  `idcategorie` int(11) NOT NULL,
+  `idCategorie` int(11) NOT NULL,
   `dateHeureCreation` timestamp NOT NULL DEFAULT current_timestamp(),
   `dateHeureMAJ` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -280,7 +280,7 @@ CREATE TABLE `v_mouvement` (
 --
 DROP TABLE IF EXISTS `v_categorie`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_categorie`  AS SELECT `c`.`nomCategorie` AS `nomCategorie`, `sc`.`nomSousCategorie` AS `nomSousCategorie` FROM (`categorie` `c` join `souscategorie` `sc`) WHERE `sc`.`idcategorie` = `c`.`idCategorie` ORDER BY `c`.`nomCategorie` ASC, `sc`.`nomSousCategorie` ASC ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_categorie`  AS SELECT `c`.`nomCategorie` AS `nomCategorie`, `sc`.`nomSousCategorie` AS `nomSousCategorie` FROM (`categorie` `c` join `souscategorie` `sc`) WHERE `sc`.`idCategorie` = `c`.`idCategorie` ORDER BY `c`.`nomCategorie` ASC, `sc`.`nomSousCategorie` ASC ;
 
 -- --------------------------------------------------------
 
@@ -324,7 +324,7 @@ ALTER TABLE `mouvement`
 --
 ALTER TABLE `souscategorie`
   ADD PRIMARY KEY (`idSousCategorie`),
-  ADD KEY `SousCategorie_Categorie_idCategorie_fk` (`idcategorie`);
+  ADD KEY `SousCategorie_Categorie_idCategorie_fk` (`idCategorie`);
 
 --
 -- Index pour la table `tiers`
@@ -417,7 +417,7 @@ ALTER TABLE `mouvement`
 -- Contraintes pour la table `souscategorie`
 --
 ALTER TABLE `souscategorie`
-  ADD CONSTRAINT `SousCategorie_Categorie_idCategorie_fk` FOREIGN KEY (`idcategorie`) REFERENCES `categorie` (`idCategorie`) ON DELETE CASCADE;
+  ADD CONSTRAINT `SousCategorie_Categorie_idCategorie_fk` FOREIGN KEY (`idCategorie`) REFERENCES `categorie` (`idCategorie`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `tiers`
