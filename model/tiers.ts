@@ -1,4 +1,4 @@
-export default interface Tiers {
+export interface Tiers {
     idTiers: number;
     nomTiers: string;
     idUtilisateur: number;

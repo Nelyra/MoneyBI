@@ -1,21 +1,15 @@
-import * as mysql from 'mysql';
+import mysql, { ConnectionOptions, Pool } from 'mysql2/promise';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-export const client = mysql.createConnection({
+const access: ConnectionOptions = {
     host: process.env.BDD_HOST, 
     user: process.env.BDD_USER,
     password: process.env.BDD_PASSWORD,
     database: process.env.BDD_NAME,
-})
-
-export function connectMySQL()
-{
-    try {
-        this.client.connect()
-    } catch (e) {
-        console.error(e);
-    }
 }
 
+const connection: Pool = mysql.createPool(access);
+
+export default connection;
