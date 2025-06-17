@@ -6,6 +6,8 @@ export async function emptyTables() {
     await sql.query("TRUNCATE TABLE categorie");
     await sql.query("TRUNCATE TABLE souscategorie");
     await sql.query("TRUNCATE TABLE compte");
+    await sql.query("TRUNCATE TABLE tiers");
+    await sql.query("TRUNCATE TABLE mouvement");
     await sql.query("SET FOREIGN_KEY_CHECKS = 1");
     console.log("All tables have been emptied.");
 }

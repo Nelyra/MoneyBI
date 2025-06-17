@@ -33,7 +33,7 @@ async function generateTestData() {
         const tiers = await insertMultipleTiers(generateTiersList(10));
 
         // LE GENERATE MOUVEMENTS MARCHE PAS
-        const mouvements = await insertMultipleMouvements(generateMouvements(1, comptes.length, sousCategoriesWithId, tiers.length));
+        const mouvements = await insertMultipleMouvements(generateMouvements(10, comptes.length, sousCategoriesWithId, tiers.length));
 
         console.log("Test data generated successfully.");
         exit(0);
