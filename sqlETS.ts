@@ -10,4 +10,4 @@ const access: ConnectionOptions = {
     database: process.env.BDD_NAME,
 }
 
-export const localSql: Pool = mysql.createPool(access);
+export const etlSql: Pool = mysql.createPool(access);
