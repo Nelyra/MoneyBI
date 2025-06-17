@@ -16,9 +16,6 @@ import { insertMultipleComptes } from "./services/CompteService";
 import { insertMultipleTiers } from "./services/TiersService";
 import { insertMultipleMouvements } from "./services/MouvementService";
 import { exit } from "process";
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 async function generateTestData() {
     try {

@@ -9,6 +9,7 @@
     "@types/node": "^24.0.1"
   },
   "scripts": {
-    "generate": "tsx generate.ts"
+    "generate": "tsx generate.ts",
+    "insert": "tsx insert.ts"
   }
 }
