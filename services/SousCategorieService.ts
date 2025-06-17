@@ -1,5 +1,5 @@
 import { localSql } from "../sql";
-import { SousCategorie } from "../model/souscategorie";
+import { SousCategorie, SousCategorieETL } from "../model/souscategorie";
 
 export async function getSousCategories(): Promise<SousCategorie[]> {
     const result = (await localSql.query("SELECT * FROM souscategorie")
@@ -9,6 +9,27 @@ export async function getSousCategories(): Promise<SousCategorie[]> {
         }))[0] as SousCategorie[];
 
     return result;
+}
+
+export function getSousCategoriesETL(): SousCategorieETL[] {
+    const sousCategoriesETL: SousCategorieETL[] = [];
+
+    getSousCategories().then((sousCategories) => {
+        for (const sousCategorie of sousCategories) {
+            if (sousCategorie.idSousCategorie === null || sousCategorie.idSousCategorie === undefined) {
+                console.warn("Skipping souscategorie with null values:", sousCategorie);
+                continue;
+            }
+
+            sousCategoriesETL.push({
+                idSousCategorie: sousCategorie.idSousCategorie,
+                idCategorie: sousCategorie.idCategorie,
+                nomSousCategorie: sousCategorie.nomSousCategorie,
+            });
+        }
+    });
+
+    return sousCategoriesETL;
 }
 
 export async function getSousCategorieById(id: number): Promise<SousCategorie | null> {
