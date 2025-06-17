@@ -3,36 +3,35 @@ import { localSql, etlSql } from "../sql";
 import { Mouvement, MouvementETL } from "../model/mouvement"; 
 
 export async function getMouvements(): Promise<Mouvement[]> {
-    const result = await localSql.query("SELECT * FROM mouvement")
+    const result = (await localSql.query("SELECT * FROM mouvement")
         .catch((err) => {
             console.error("Error fetching mouvements:", err);
             throw err;
-        })[0] as Mouvement[];
+        }))[0] as Mouvement[];
 
     return result;
 }
 
-export function getMouvementsETL(): MouvementETL[] {
+export async function getMouvementsETL(): Promise<MouvementETL[]> {
     const mouvementsETL: MouvementETL[] = [];
+    const mouvements = await getMouvements();
 
-    getMouvements().then((mouvements) => {
-        for (const mouvement of mouvements) {
-            if (mouvement.idMouvement === null || mouvement.idMouvement === undefined) {
-                console.warn("Skipping mouvement with null values:", mouvement);
-                continue;
-            }
-
-            mouvementsETL.push({
-                idMouvement: mouvement.idMouvement,
-                idCompte: mouvement.idCompte,
-                idTiers: mouvement.idTiers,
-                idSousCategorie: mouvement.idSousCategorie,
-                idCategorie: mouvement.idCategorie,
-                montant: mouvement.montant * (mouvement.typeMouvement === "D" ? -1 : 1), // Assuming typeMouvement is 'D' for debit and 'C' for credit
-                dateMouvement: mouvement.dateMouvement
-            });
+    for (const mouvement of mouvements) {
+        if (mouvement.idMouvement === null || mouvement.idMouvement === undefined) {
+            console.warn("Skipping mouvement with null values:", mouvement);
+            continue;
         }
-    });
+
+        mouvementsETL.push({
+            idMouvement: mouvement.idMouvement,
+            idCompte: mouvement.idCompte,
+            idTiers: mouvement.idTiers,
+            idSousCategorie: mouvement.idSousCategorie,
+            idCategorie: mouvement.idCategorie,
+            montant: mouvement.montant * (mouvement.typeMouvement === "D" ? -1 : 1), // Assuming typeMouvement is 'D' for debit and 'C' for credit
+            dateMouvement: mouvement.dateMouvement
+        });
+    }
 
     return mouvementsETL;
 }

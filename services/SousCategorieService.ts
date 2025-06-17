@@ -11,23 +11,22 @@ export async function getSousCategories(): Promise<SousCategorie[]> {
     return result;
 }
 
-export function getSousCategoriesETL(): SousCategorieETL[] {
+export async function getSousCategoriesETL(): Promise<SousCategorieETL[]> {
     const sousCategoriesETL: SousCategorieETL[] = [];
+    const sousCategories = await getSousCategories();
 
-    getSousCategories().then((sousCategories) => {
         for (const sousCategorie of sousCategories) {
-            if (sousCategorie.idSousCategorie === null || sousCategorie.idSousCategorie === undefined) {
-                console.warn("Skipping souscategorie with null values:", sousCategorie);
-                continue;
-            }
-
-            sousCategoriesETL.push({
-                idSousCategorie: sousCategorie.idSousCategorie,
-                idCategorie: sousCategorie.idCategorie,
-                nomSousCategorie: sousCategorie.nomSousCategorie,
-            });
+        if (sousCategorie.idSousCategorie === null || sousCategorie.idSousCategorie === undefined) {
+            console.warn("Skipping souscategorie with null values:", sousCategorie);
+            continue;
         }
-    });
+
+        sousCategoriesETL.push({
+            idSousCategorie: sousCategorie.idSousCategorie,
+            idCategorie: sousCategorie.idCategorie,
+            nomSousCategorie: sousCategorie.nomSousCategorie,
+        });
+    }
 
     return sousCategoriesETL;
 }
@@ -75,5 +74,14 @@ export async function insertMultipleSousCategories(sousCategories: SousCategorie
         insertedSousCategories.push(insertedSousCategorie);
     }
     return insertedSousCategories;
+}
+
+export async function insertMultipleETLSousCategories(sousCategoriesETL: SousCategorieETL[]): Promise<SousCategorieETL[]> {
+    const insertedSousCategoriesETL: SousCategorieETL[] = [];
+    for (const sousCategorieETL of sousCategoriesETL) {
+        const insertedSousCategorieETL = await insertETLSousCategorie(sousCategorieETL);
+        insertedSousCategoriesETL.push(insertedSousCategorieETL);
+    }
+    return insertedSousCategoriesETL;
 }
 

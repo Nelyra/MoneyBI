@@ -2,31 +2,29 @@ import { localSql, etlSql } from "../sql";
 import { Compte, CompteETL } from "../model/compte";
 
 export async function getComptes(): Promise<Compte[]> {
-    const result = await localSql.query("SELECT * FROM compte")
+    const result = (await localSql.query("SELECT * FROM compte")
         .catch((err) => {
             console.error("Error fetching comptes:", err);
             throw err;
-        })[0] as Compte[];
+        }))[0] as Compte[];
 
     return result;
 }
 
-export function getComptesETL(): CompteETL[] {
+export async function getComptesETL(): Promise<CompteETL[]> {
     const comptesETL: CompteETL[] = [];
-
-    getComptes().then((comptes) => {
-        for (const compte of comptes) {
-            if (compte.idCompte === null || compte.idCompte === undefined) {
-                console.warn("Skipping compte with null values:", compte);
-                continue;
-            }
-
-            comptesETL.push({
-                idCompte: compte.idCompte,
-                nomBanque: compte.nomBanque,
-            });
+    const comptes = await getComptes();
+    for (const compte of comptes) {
+        if (compte.idCompte === null || compte.idCompte === undefined) {
+            console.warn("Skipping compte with null values:", compte);
+            continue;
         }
-    });
+
+        comptesETL.push({
+            idCompte: compte.idCompte,
+            nomBanque: compte.nomBanque,
+        });
+    }
 
     return comptesETL;
 }

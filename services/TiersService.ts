@@ -3,31 +3,30 @@ import { localSql, etlSql } from "../sql";
 import { Tiers, TiersETL } from "../model/tiers";
 
 export async function getTiers(): Promise<Tiers[]> {
-    const result = await localSql.query("SELECT * FROM tiers")
+    const result = (await localSql.query("SELECT * FROM tiers")
         .catch((err) => {
             console.error("Error fetching tiers:", err);
             throw err;
-        })[0] as Tiers[];
+        }))[0] as Tiers[];
 
     return result;
 }
 
-export function getTiersETL(): TiersETL[] {
+export async function getTiersETL(): Promise<TiersETL[]> {
     const tiersETL: TiersETL[] = [];
+    const tiers = await getTiers();
 
-    getTiers().then((tiers) => {
-        for (const tier of tiers) {
-            if (tier.idTiers === null || tier.idTiers === undefined) {
-                console.warn("Skipping tier with null values:", tier);
-                continue;
-            }
-
-            tiersETL.push({
-                idTiers: tier.idTiers,
-                nomTiers: tier.nomTiers,
-            });
+     for (const tier of tiers) {
+        if (tier.idTiers === null || tier.idTiers === undefined) {
+            console.warn("Skipping tier with null values:", tier);
+            continue;
         }
-    });
+
+        tiersETL.push({
+            idTiers: tier.idTiers,
+            nomTiers: tier.nomTiers,
+        });
+    }
 
     return tiersETL;
 }

@@ -3,31 +3,30 @@ import { Categorie, CategorieETL } from "../model/categorie";
 import { localSql, etlSql } from "../sql";
 
 export async function getCategories(): Promise<Categorie[]> {
-    const result = await localSql.query("SELECT * FROM categorie")
+    const result = (await localSql.query("SELECT * FROM categorie")
         .catch((err) => {
             console.error("Error fetching categories:", err);
             throw err;
-        })[0] as Categorie[];
+        }))[0] as Categorie[];
 
     return result;
 }
 
-export function getCategoriesETL(): CategorieETL[] {
+export async function getCategoriesETL(): Promise<CategorieETL[]> {
     var categoriesETL: CategorieETL[] = [];
+    const categories = await getCategories();
 
-    getCategories().then((categories) => {
-        for (const categorie of categories) {
-            if(categorie.idCategorie === null || categorie.idCategorie === undefined) {
-                console.warn("Skipping category with null values:", categorie);
-                continue;
-            }
-
-            categoriesETL.push({
-                idCategorie: categorie.idCategorie,
-                nomCategorie: categorie.nomCategorie,
-            });
+    for (const categorie of categories) {
+        if(categorie.idCategorie === null || categorie.idCategorie === undefined) {
+            console.warn("Skipping category with null values:", categorie);
+            continue;
         }
-    });
+
+        categoriesETL.push({
+            idCategorie: categorie.idCategorie,
+            nomCategorie: categorie.nomCategorie,
+        });
+    }
 
     return categoriesETL;
 }
