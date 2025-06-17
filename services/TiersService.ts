@@ -1,6 +1,6 @@
 import { localSql } from "../sql"; 
 
-import { Tiers } from "../model/tiers";
+import { Tiers, TiersETL } from "../model/tiers";
 
 export async function getTiers(): Promise<Tiers[]> {
     const result = await localSql.query("SELECT * FROM tiers")
@@ -10,6 +10,26 @@ export async function getTiers(): Promise<Tiers[]> {
         })[0] as Tiers[];
 
     return result;
+}
+
+export function getTiersETL(): TiersETL[] {
+    const tiersETL: TiersETL[] = [];
+
+    getTiers().then((tiers) => {
+        for (const tier of tiers) {
+            if (tier.idTiers === null || tier.idTiers === undefined) {
+                console.warn("Skipping tier with null values:", tier);
+                continue;
+            }
+
+            tiersETL.push({
+                idTiers: tier.idTiers,
+                nomTiers: tier.nomTiers,
+            });
+        }
+    });
+
+    return tiersETL;
 }
 
 export async function getTiersById(id: number): Promise<Tiers | null> {

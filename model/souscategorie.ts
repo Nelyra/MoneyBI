@@ -5,3 +5,9 @@ export interface SousCategorie {
     dateHeureCreation: Date;
     dateHeureMAJ: Date;
 }
+
+export interface SousCategorieETL {
+    idSousCategorie: number;
+    idCategorie: number;
+    nomSousCategorie: string;
+}

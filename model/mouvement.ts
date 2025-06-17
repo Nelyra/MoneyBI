@@ -11,3 +11,13 @@ export interface Mouvement {
     dateHeureCreation: Date;
     dateHeureMAJ: Date;
 }
+
+export interface MouvementETL {
+    idMouvement: number;
+    idCompte: number;
+    idTiers: number;
+    idSousCategorie: number;
+    idCategorie: number;
+    montant: number;
+    dateMouvement: Date;
+}

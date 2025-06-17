@@ -1,4 +1,5 @@
-import { Categorie } from "../model/categorie";
+import { get } from "http";
+import { Categorie, CategorieETL } from "../model/categorie";
 import { localSql } from "../sql";
 
 export async function getCategories(): Promise<Categorie[]> {
@@ -9,6 +10,26 @@ export async function getCategories(): Promise<Categorie[]> {
         })[0] as Categorie[];
 
     return result;
+}
+
+export function getCategoriesETL(): CategorieETL[] {
+    var categoriesETL: CategorieETL[] = [];
+
+    getCategories().then((categories) => {
+        for (const categorie of categories) {
+            if(categorie.idCategorie === null || categorie.idCategorie === undefined) {
+                console.warn("Skipping category with null values:", categorie);
+                continue;
+            }
+
+            categoriesETL.push({
+                idCategorie: categorie.idCategorie,
+                nomCategorie: categorie.nomCategorie,
+            });
+        }
+    });
+
+    return categoriesETL;
 }
 
 export async function getCategorieById(id: number): Promise<Categorie | null> {

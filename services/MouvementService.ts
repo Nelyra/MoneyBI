@@ -1,6 +1,6 @@
 import { localSql } from "../sql";
 
-import { Mouvement } from "../model/mouvement"; 
+import { Mouvement, MouvementETL } from "../model/mouvement"; 
 
 export async function getMouvements(): Promise<Mouvement[]> {
     const result = await localSql.query("SELECT * FROM mouvement")
@@ -10,6 +10,31 @@ export async function getMouvements(): Promise<Mouvement[]> {
         })[0] as Mouvement[];
 
     return result;
+}
+
+export function getMouvementsETL(): MouvementETL[] {
+    const mouvementsETL: MouvementETL[] = [];
+
+    getMouvements().then((mouvements) => {
+        for (const mouvement of mouvements) {
+            if (mouvement.idMouvement === null || mouvement.idMouvement === undefined) {
+                console.warn("Skipping mouvement with null values:", mouvement);
+                continue;
+            }
+
+            mouvementsETL.push({
+                idMouvement: mouvement.idMouvement,
+                idCompte: mouvement.idCompte,
+                idTiers: mouvement.idTiers,
+                idSousCategorie: mouvement.idSousCategorie,
+                idCategorie: mouvement.idCategorie,
+                montant: mouvement.montant,
+                dateMouvement: mouvement.dateMouvement
+            });
+        }
+    });
+
+    return mouvementsETL;
 }
 
 export async function getMouvementById(id: number): Promise<Mouvement | null> {
