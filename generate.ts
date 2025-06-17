@@ -11,11 +11,14 @@ import { emptyTables } from "./services/EmptyService";
 
 import { makeUtilisateur } from "./services/UtilisateurService";
 import { insertMultipleCategories } from "./services/CategorieService";
-import { insertMultipleSousCategories } from "./services/SousCategorieService";
+import { insertMultipleSousCategories, getSousCategories } from "./services/SousCategorieService";
 import { insertMultipleComptes } from "./services/CompteService";
 import { insertMultipleTiers } from "./services/TiersService";
 import { insertMultipleMouvements } from "./services/MouvementService";
 import { exit } from "process";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 async function generateTestData() {
     try {
@@ -24,12 +27,13 @@ async function generateTestData() {
         await makeUtilisateur(generateUtilisateur());
         const categories = await insertMultipleCategories(generateCategories(10));
         const sousCategories = await insertMultipleSousCategories(generateSousCategories(10, categories.length));
+        const sousCategoriesWithId = await getSousCategories();
 
         const comptes = await insertMultipleComptes(generateComptes(10));
         const tiers = await insertMultipleTiers(generateTiersList(10));
 
         // LE GENERATE MOUVEMENTS MARCHE PAS
-        //const mouvements = await insertMultipleMouvements(generateMouvements(10, comptes.length, categories.length));
+        const mouvements = await insertMultipleMouvements(generateMouvements(1, comptes.length, sousCategoriesWithId, tiers.length));
 
         console.log("Test data generated successfully.");
         exit(0);

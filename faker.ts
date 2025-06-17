@@ -8,7 +8,7 @@ import { Utilisateur } from './model/utilisateur';
 
 function generateCategorie(): Categorie {
     return {
-        idCategorie: faker.number.int({ min: 1, max: 1000 }),
+        // idCategorie: faker.number.int({ min: 1, max: 1000 }),
         nomCategorie: faker.commerce.department(),
         dateHeureCreation: faker.date.past(),
         dateHeureMAJ: faker.date.recent(),
@@ -21,7 +21,7 @@ export function generateCategories(count: number): Categorie[] {
 
 function generateCompte(): Compte {
     return {
-        idCompte: faker.number.int({ min: 1, max: 1000 }),
+        // idCompte: faker.number.int({ min: 1, max: 1000 }),
         nomBanque: faker.company.name(),
         descriptionCompte: faker.lorem.sentence(),
         idUtilisateur: 1,
@@ -34,14 +34,18 @@ export function generateComptes(count: number): Compte[] {
     return Array.from({ length: count }, generateCompte);
 }
 
-function generateMouvement(idCompte: number, sousCategorie: SousCategorie): Mouvement {
+function generateMouvement(idCompte: number, sousCategorie: SousCategorie, nbTiers: number): Mouvement {
+    if(sousCategorie.idSousCategorie === undefined || sousCategorie.idSousCategorie === null) {
+        throw new Error("SousCategorie must have a valid idSousCategorie");
+    }
+
     return {
-        idMouvement: faker.number.int({ min: 1, max: 1000 }),
+        // idMouvement: faker.number.int({ min: 1, max: 1000 }),
         idCompte,
-        idTiers: faker.number.int({ min: 1, max: 1000 }),
+        idTiers: faker.number.int({ min: 1, max: nbTiers }),
         idSousCategorie: sousCategorie.idSousCategorie,
         idCategorie: sousCategorie.idCategorie,
-        idVirement: faker.number.int({ min: 1, max: 1000 }),
+        idVirement: null,
         montant: parseFloat(faker.commerce.price()),
         typeMouvement: faker.helpers.arrayElement(['D', 'C']),
         dateMouvement: faker.date.past(),
@@ -50,13 +54,13 @@ function generateMouvement(idCompte: number, sousCategorie: SousCategorie): Mouv
     }
 }
 
-export function generateMouvements(count: number, nbComptes: number, sousCategories: SousCategorie[]) : Mouvement[] {
-    return Array.from({ length: count }, () => generateMouvement(faker.number.int({min: 1, max: nbComptes}), faker.helpers.arrayElement(sousCategories)));
+export function generateMouvements(count: number, nbComptes: number, sousCategories: SousCategorie[], nbTiers: number) : Mouvement[] {
+    return Array.from({ length: count }, () => generateMouvement(faker.number.int({min: 1, max: nbComptes}), faker.helpers.arrayElement(sousCategories), nbTiers));
 }
 
 function generateSousCategorie(idCategorie: number): SousCategorie {
     return {
-        idSousCategorie: faker.number.int({ min: 1, max: 1000 }),
+        // idSousCategorie: faker.number.int({ min: 1, max: 1000 }),
         idCategorie,
         nomSousCategorie: faker.commerce.productName(),
         dateHeureCreation: faker.date.past(),
@@ -70,7 +74,7 @@ export function generateSousCategories(count: number, nbCategorie: number): Sous
 
 function generateTiers(): Tiers {
     return {
-        idTiers: faker.number.int({ min: 1, max: 1000 }),
+        // idTiers: faker.number.int({ min: 1, max: 1000 }),
         nomTiers: faker.company.name(),
         idUtilisateur: 1,
         dateHeureCreation: faker.date.past(),

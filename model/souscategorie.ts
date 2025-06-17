@@ -1,5 +1,5 @@
 export interface SousCategorie {
-    idSousCategorie: number;
+    idSousCategorie?: number;
     idCategorie: number;
     nomSousCategorie: string;
     dateHeureCreation: Date;

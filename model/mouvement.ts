@@ -1,10 +1,10 @@
 export interface Mouvement {
-    idMouvement: number;
+    idMouvement?: number;
     idCompte: number;
     idTiers: number;
     idSousCategorie: number;
     idCategorie: number;
-    idVirement: number;
+    idVirement: number | null;
     montant: number;
     typeMouvement: string; // 'D' pour débit, 'C' pour crédit
     dateMouvement: Date;

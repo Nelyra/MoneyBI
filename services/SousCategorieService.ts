@@ -2,11 +2,11 @@ import sql from "../mysql";
 import { SousCategorie } from "../model/souscategorie";
 
 export async function getSousCategories(): Promise<SousCategorie[]> {
-    const result = await sql.query("SELECT * FROM souscategorie")
+    const result = (await sql.query("SELECT * FROM souscategorie")
         .catch((err) => {
             console.error("Error fetching souscategories:", err);
             throw err;
-        })[0] as SousCategorie[];
+        }))[0] as SousCategorie[];
 
     return result;
 }
