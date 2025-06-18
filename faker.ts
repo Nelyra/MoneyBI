@@ -6,12 +6,13 @@ import { SousCategorie } from './model/souscategorie';
 import { Tiers } from './model/tiers';
 import { Utilisateur } from './model/utilisateur';
 
+const DATE_START: Date = new Date(2022, 0, 1);
+
 function generateCategorie(): Categorie {
     return {
-        // idCategorie: faker.number.int({ min: 1, max: 1000 }),
         nomCategorie: faker.commerce.department(),
-        dateHeureCreation: faker.date.past(),
-        dateHeureMAJ: faker.date.recent(),
+        dateHeureCreation: DATE_START,
+        dateHeureMAJ: DATE_START,
     }
 }
 
@@ -21,12 +22,11 @@ export function generateCategories(count: number): Categorie[] {
 
 function generateCompte(): Compte {
     return {
-        // idCompte: faker.number.int({ min: 1, max: 1000 }),
         nomBanque: faker.company.name(),
         descriptionCompte: faker.lorem.sentence(),
         idUtilisateur: 1,
-        dateHeureCreation: faker.date.past(),
-        dateHeureMAJ: faker.date.recent(),
+        dateHeureCreation: DATE_START,
+        dateHeureMAJ: DATE_START,
     }
 }
 
@@ -39,8 +39,12 @@ function generateMouvement(idCompte: number, sousCategorie: SousCategorie, nbTie
         throw new Error("SousCategorie must have a valid idSousCategorie");
     }
 
+    const dateMouvement = faker.date.between({
+        from: DATE_START,
+        to: Date.now()
+    })
+
     return {
-        // idMouvement: faker.number.int({ min: 1, max: 1000 }),
         idCompte,
         idTiers: faker.number.int({ min: 1, max: nbTiers }),
         idSousCategorie: sousCategorie.idSousCategorie,
@@ -48,9 +52,9 @@ function generateMouvement(idCompte: number, sousCategorie: SousCategorie, nbTie
         idVirement: null,
         montant: parseFloat(faker.commerce.price()),
         typeMouvement: faker.helpers.arrayElement(['D', 'C']),
-        dateMouvement: faker.date.past(),
-        dateHeureCreation: faker.date.past(),
-        dateHeureMAJ: faker.date.recent(),
+        dateMouvement: dateMouvement,
+        dateHeureCreation: dateMouvement,
+        dateHeureMAJ: dateMouvement,
     }
 }
 
@@ -60,11 +64,10 @@ export function generateMouvements(count: number, nbComptes: number, sousCategor
 
 function generateSousCategorie(idCategorie: number): SousCategorie {
     return {
-        // idSousCategorie: faker.number.int({ min: 1, max: 1000 }),
         idCategorie,
         nomSousCategorie: faker.commerce.productName(),
-        dateHeureCreation: faker.date.past(),
-        dateHeureMAJ: faker.date.recent(),
+        dateHeureCreation: DATE_START,
+        dateHeureMAJ: DATE_START,
     }
 }
 
@@ -74,11 +77,10 @@ export function generateSousCategories(count: number, nbCategorie: number): Sous
 
 function generateTiers(): Tiers {
     return {
-        // idTiers: faker.number.int({ min: 1, max: 1000 }),
         nomTiers: faker.company.name(),
         idUtilisateur: 1,
-        dateHeureCreation: faker.date.past(),
-        dateHeureMAJ: faker.date.recent(),
+        dateHeureCreation: DATE_START,
+        dateHeureMAJ: DATE_START,
     }
 }
 
@@ -95,8 +97,8 @@ export function generateUtilisateur(): Utilisateur {
         mdp: faker.internet.password(),
         ville: faker.location.city(),
         codePostal: faker.location.zipCode(),
-        dateHeureCreation: faker.date.past(),
-        dateHeureMAJ: faker.date.recent(),
+        dateHeureCreation: DATE_START,
+        dateHeureMAJ: DATE_START,
     }
 }
 
