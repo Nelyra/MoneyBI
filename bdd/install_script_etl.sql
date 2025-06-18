@@ -1,3 +1,11 @@
+-- Clear database
+DROP TABLE IF EXISTS `Mouvement`;
+DROP TABLE IF EXISTS `Tiers`;
+DROP TABLE IF EXISTS `Compte`;
+DROP TABLE IF EXISTS `SousCategorie`;
+DROP TABLE IF EXISTS `Categorie`;
+
+
 CREATE TABLE `Mouvement` (
   `idMouvement` integer PRIMARY KEY,
   `dateMouvement` date,
@@ -15,7 +23,8 @@ CREATE TABLE `Tiers` (
 
 CREATE TABLE `Compte` (
   `idCompte` integer PRIMARY KEY,
-  `nomBanque` varchar(50)
+  `nomBanque` varchar(50),
+  `dernierMontantCalcule` float
 );
 
 CREATE TABLE `SousCategorie` (

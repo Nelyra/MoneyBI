@@ -7,7 +7,12 @@ export interface Compte {
     dateHeureMAJ: Date;
 }
 
+export interface CompteWithMontant extends Compte {
+    dernierMontantCalculé: number;
+}
+
 export interface CompteETL {
     idCompte: number;
     nomBanque: string;
+    dernierMontantCalcule: number;
 }
