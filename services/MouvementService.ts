@@ -47,8 +47,8 @@ export async function getMouvementById(id: number): Promise<Mouvement | null> {
 }
 
 export async function insertMouvement(mouvement: Mouvement): Promise<Mouvement> {
-    const result: any = await localSql.query("INSERT INTO mouvement (idCompte, idTiers, idSousCategorie, idCategorie, montant, dateHeureCreation, dateHeureMAJ, typeMouvement) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", 
-        [mouvement.idCompte, mouvement.idTiers, mouvement.idSousCategorie, mouvement.idCategorie, mouvement.montant, mouvement.dateHeureCreation, mouvement.dateHeureMAJ, mouvement.typeMouvement])
+    const result: any = await localSql.query("INSERT INTO mouvement (idCompte, idTiers, idSousCategorie, idCategorie, montant, dateMouvement, dateHeureMAJ, typeMouvement) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", 
+        [mouvement.idCompte, mouvement.idTiers, mouvement.idSousCategorie, mouvement.idCategorie, mouvement.montant, mouvement.dateMouvement, mouvement.dateHeureMAJ, mouvement.typeMouvement])
         .catch((err) => {
             console.error("Error inserting mouvement:", err);
             throw err;
@@ -60,7 +60,8 @@ export async function insertMouvement(mouvement: Mouvement): Promise<Mouvement> 
 }
 
 export async function insertETLMouvement(mouvement: MouvementETL): Promise<MouvementETL> {
-    const result: any = await etlSql.query("INSERT INTO mouvement (idMouvement, idCompte, idTiers, idSousCategorie, idCategorie, montant, dateMouvement) VALUES (?, ?, ?, ?, ?, ?, ?)",
+
+    const result: any = await etlSql.query("INSERT INTO mouvement (idMouvement, idCompte,idTiers, idSousCategorie, idCategorie, montant, dateMouvement) VALUES (?, ?, ?, ?, ?, ?, ?)",
         [mouvement.idMouvement, mouvement.idCompte, mouvement.idTiers, mouvement.idSousCategorie, mouvement.idCategorie, mouvement.montant, mouvement.dateMouvement])
         .catch((err) => {
             console.error("Error inserting ETL mouvement:", err);
